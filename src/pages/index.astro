@@ -1,82 +1,36 @@
 ---
-import { getEntry } from "astro:content";
-import Alert from "../components/Alert.astro";
-import Guide from "../components/Guide.astro";
-import Layout from "../components/Layout.astro";
-import TableRow from "../components/TableRow.astro";
-import { supabase } from "../utils/database";
-
-export const prerender = false;
-
-let frameworks;
-let frameworksError;
-
-// Fetch frameworks data from Supabase if connection is set up
-if (supabase) {
-  const { data, error } = await supabase
-    .from("frameworks")
-    .select("*")
-    .order("likes", { ascending: false });
-  frameworks = data;
-  frameworksError = error;
-}
-
-// Get guides
-const connectGuide = await getEntry("guides", "guide-connect-supabase");
-const fetchDataGuide = await getEntry("guides", "guide-fetch-data");
 ---
 
-<Layout title="Web Frameworks">
-  {
-    supabase ? (
-      frameworks ? (
-        <>
-          <h1 class="mb-8 text-4xl font-bold">
-            Vote for Your Favorite Web Framework
-          </h1>
-          <table class="w-full text-left">
-            <thead>
-              <tr class="font-mono text-base border-t border-b">
-                <th>Name</th>
-                <th>Logo</th>
-                <th>Likes</th>
-              </tr>
-            </thead>
-            <tbody>
-              {frameworks?.map((framework) => (
-                <TableRow framework={framework} />
-              ))}
-            </tbody>
-          </table>
-        </>
-      ) : (
-        <>
-          {frameworksError && (
-            <Alert
-              title={frameworksError.code}
-              text={frameworksError.message}
-              variant="error"
-            />
-          )}
-          {fetchDataGuide && <Guide guide={fetchDataGuide} />}
-        </>
-      )
-    ) : (
-      <>
-        <Alert title="Finish setting up your new site" text="Before your website is ready, you must complete the steps from the guide below to create, populate, and connect your Supabase database."/>
-        {connectGuide && <Guide guide={connectGuide} />}
-      </>
-    )
-  }
-</Layout>
-<hr style="margin-top: 50px; border: 1px solid #444;" />
+// Egyszerű statikus ZDON oldal
 
-<div style="text-align:center; margin-top:40px;">
-  <h1>🚀 ZDON Coin</h1>
-  <h2>The Web3 Mafia Boss</h2>
-  <p>Loyalty. Power. Real utility on Solana.</p>
-  <br />
-  <a href="https://pump.fun/AVK4JDNr77ok3LY8ERURGX6mEh9rSYAcbBNtjj9Hpump" style="color:#0ff; font-size:18px;">👉 Buy on Pump.fun</a><br /><br />
-  <a href="https://t.me/zdonfamily" style="color:#0f0; font-size:18px;">👉 Join Telegram</a><br /><br />
-  <a href="https://x.com/KCsaba28232?s=09" style="color:#1da1f2; font-size:18px;">👉 Follow on X (Twitter)</a>
-</div>⅕
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ZDON Coin</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #000;
+        color: #fff;
+        text-align: center;
+        padding: 40px;
+      }
+      a {
+        color: #0ff;
+        font-size: 18px;
+        display: block;
+        margin: 10px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🚀 ZDON Coin</h1>
+    <h2>The Web3 Mafia Boss</h2>
+    <p>Loyalty. Power. Real utility on Solana.</p>
+    <br />
+    <a href="https://pump.fun/AVK4JDNr77ok3LY8ERURGX6mEh9rSYAcbBNtjj9Hpump">👉 Buy on Pump.fun</a>
+    <a href="https://t.me/zdonfamily">👉 Join Telegram</a>
+    <a href="https://x.com/KCsaba28232?s=09">👉 Follow on X (Twitter)</a>
+  </body>
+</html>
